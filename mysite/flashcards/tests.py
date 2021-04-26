@@ -1,5 +1,5 @@
 from django.test import TestCase
-from polls.models import Card
+from flashcards.models import Card
 
 
 # Create your tests here.
