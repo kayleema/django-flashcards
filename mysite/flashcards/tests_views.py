@@ -9,9 +9,9 @@ class ViewsTests(TestCase):
 
     def test_when_no_cards_return_empty_list(self):
         # Issue a GET request.
-        response = self.client.get('/flashcards/cards')
+        response = self.client.get('/flashcards/cards/')
 
         # Check that the response is 200 OK.
         self.assertEqual(response.status_code, 200)
 
-        self.assertEqual(len(response.json()['cards']), 0)
+        self.assertEqual(len(response.json()), 0)
