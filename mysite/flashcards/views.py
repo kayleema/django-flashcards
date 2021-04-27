@@ -1,9 +1,23 @@
-from django.http import HttpResponse, JsonResponse
+from rest_framework import serializers, viewsets
+from rest_framework import permissions
+
+from flashcards.models import Card
 
 
-def index(request):
-    return HttpResponse("Hello, world. You're at the flashcards index.")
+class CardSerializer(serializers.HyperlinkedModelSerializer):
+    author = serializers.PrimaryKeyRelatedField(read_only=True)
+
+    class Meta:
+        model = Card
+        fields = ['id', 'front', 'back', 'author']
 
 
-def cards(request):
-    return JsonResponse({"cards": []})
+class CardViewSet(viewsets.ModelViewSet):
+    serializer_class = CardSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_queryset(self):
+        return Card.objects.filter(author=self.request.user)
+
+    def perform_create(self, serializer):
+        serializer.save(author=self.request.user)
