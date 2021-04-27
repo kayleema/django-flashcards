@@ -34,8 +34,8 @@ class ViewsTests(TestCase):
         response = self.client.get('/flashcards/cards/')
 
         self.assertEqual(response.json(), [
-            {"front": "足袋", "back": "たび", "author": self.test_user.id},
-            {"front": "麻雀", "back": "マージャン", "author": self.test_user.id}
+            {"id": 1, "front": "足袋", "back": "たび", "author": self.test_user.id},
+            {"id": 2, "front": "麻雀", "back": "マージャン", "author": self.test_user.id}
         ])
 
     def test_create_user(self):
@@ -54,5 +54,5 @@ class ViewsTests(TestCase):
         response = self.client.get('/flashcards/cards/')
 
         self.assertEqual(response.json(), [
-            {"front": "足袋", "back": "たび", "author": self.test_user.id}
+            {"id": 1, "front": "足袋", "back": "たび", "author": self.test_user.id}
         ])
