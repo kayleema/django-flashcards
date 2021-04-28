@@ -1,36 +1,62 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import {act, render, screen} from '@testing-library/react';
 import App from './App';
-import {Card, CardsRepo} from "./CardsRepo";
+import {NetworkCardsRepo} from "./CardsRepo";
+import userEvent from "@testing-library/user-event";
 
-
-class SpyCardsRepo implements CardsRepo {
-  public getCards_called: boolean = false;
-  public getCards_return: Card[] = [];
-  getCards(): Promise<Card[]> {
-    this.getCards_called = true
-    return Promise.resolve(this.getCards_return);
-  }
-}
+jest.mock('./CardsRepo'); // SoundPlayer is now a mock constructor
 
 describe("App", () => {
-  let spyCardsRepo: SpyCardsRepo
-  beforeEach(() => {
-    spyCardsRepo = new SpyCardsRepo()
-    spyCardsRepo.getCards_return = [{front: "足袋", back: "たび"}]
-    render(<App cardsRepo={spyCardsRepo}/>);
-  })
+    let spyCardsRepo: NetworkCardsRepo
+    beforeEach(async () => {
+        spyCardsRepo = new NetworkCardsRepo()
+        const mockCardsList = [
+            {front: "足袋", back: "たび"},
+            {front: "甲子園", back: "こうしえん"},
+            {front: "兵庫", back: "ひょうご"}
+        ]
+        jest.spyOn(spyCardsRepo, 'getCards').mockResolvedValue(mockCardsList);
+        jest.spyOn(spyCardsRepo, 'reviewCard').mockResolvedValue(undefined);
 
-  test('calls api for cards', () => {
-      expect(spyCardsRepo.getCards_called).toBe(true);
-  })
+        await act(async () => {
+            render(<App cardsRepo={spyCardsRepo}/>)
+        });
+    })
 
-  test('redirect to login when not logged in', () => {
-  })
+    test('calls api for cards and displays first card', async () => {
+        expect(await screen.findByText('足袋')).toBeInTheDocument()
+        expect(spyCardsRepo.getCards).toHaveBeenCalled()
+    })
 
-  test('renders learn react link', () => {
-    const linkElement = screen.getByText(/learn react/i);
-    expect(linkElement).toBeInTheDocument();
-  });
+    describe('表示のボタンを押すと', () => {
+        beforeEach(() => {
+            const hyouji = screen.getByText('表示')
+            userEvent.click(hyouji)
+        })
+        test('丸とバツのボタンを表示します', async () => {
+            expect(await screen.findByText('たび')).toBeInTheDocument()
+
+            const maru = screen.getByText('○')
+            const batsu = screen.getByText('✕️')
+            expect(maru).toBeInTheDocument()
+            expect(batsu).toBeInTheDocument()
+        })
+        describe('丸のボタンを押すと', () => {
+            test('バックエンドのカード復習APIを呼ぶ', async () => {
+                const maru = await screen.getByText('○')
+                userEvent.click(maru)
+
+                expect(spyCardsRepo.reviewCard).toBeCalledWith(true)
+            })
+        })
+        describe('バツのボタンを押すと', () => {
+            test('バックエンドのカード復習APIを呼ぶ', async () => {
+                const batsu = await screen.getByText('✕️')
+                userEvent.click(batsu)
+
+                expect(spyCardsRepo.reviewCard).toBeCalledWith(false)
+            })
+        })
+    })
 })
 

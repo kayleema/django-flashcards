@@ -6,6 +6,7 @@ export interface Card {
 
 export interface CardsRepo {
     getCards(): Promise<Card[]>
+    reviewCard(correct: Boolean): Promise<void>
 }
 
 export class NetworkCardsRepo implements CardsRepo {
@@ -15,5 +16,9 @@ export class NetworkCardsRepo implements CardsRepo {
             return Promise.reject(response.status)
         }
         return await response.json()
+    }
+
+    reviewCard(correct: Boolean): Promise<void> {
+        return Promise.resolve(undefined);
     }
 }

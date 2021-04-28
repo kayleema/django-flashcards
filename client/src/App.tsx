@@ -14,10 +14,9 @@ function App(props: AppProps) {
 
     useEffect(() => {
         props.cardsRepo.getCards().then((cards) => {
-            console.log(cards)
             setCards(cards)
         }).catch((reason) => {
-            window.location.href = 'http://localhost:8000/accounts/login/'
+            window.location.href = '/accounts/login/'
         })
     }, [])
 
@@ -26,6 +25,10 @@ function App(props: AppProps) {
             showRef.current?.focus()
         }
     }, [cards])
+
+    function handleReviewButtonClick(isCorrect: Boolean) {
+        props.cardsRepo.reviewCard(isCorrect).then()
+    }
 
     return (
         <div className="App">
@@ -36,8 +39,8 @@ function App(props: AppProps) {
             {showingAnswer && (
                 <>
                     <h2>{cards[0].back}</h2>
-                    <button>✕️</button>
-                    <button>○</button>
+                    <button onClick={() => {handleReviewButtonClick(false)}}>✕️</button>
+                    <button onClick={() => {handleReviewButtonClick(true)}}>○</button>
                 </>
             )}
             {!showingAnswer && (
