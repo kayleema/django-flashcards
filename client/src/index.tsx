@@ -3,11 +3,17 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import {NetworkCardsRepo} from './CardsRepo';
+import {FetchWrapper, NetworkCardsRepo} from './CardsRepo';
+
+class NetworkFetchRepo implements FetchWrapper {
+    fetch(url: string, options?: {}): Promise<any> {
+        return fetch(url, options)
+    }
+}
 
 ReactDOM.render(
     <React.StrictMode>
-        <App cardsRepo={new NetworkCardsRepo()}/>
+        <App cardsRepo={new NetworkCardsRepo(new NetworkFetchRepo())}/>
     </React.StrictMode>,
     document.getElementById('root')
 );

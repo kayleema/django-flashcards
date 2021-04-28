@@ -3,13 +3,14 @@ import {act, render, screen} from '@testing-library/react';
 import App from './App';
 import {NetworkCardsRepo} from "./CardsRepo";
 import userEvent from "@testing-library/user-event";
+import {StubFetchWrapper} from "./CardsRepo.test";
 
-jest.mock('./CardsRepo'); // SoundPlayer is now a mock constructor
+jest.mock('./CardsRepo');
 
 describe("App", () => {
     let spyCardsRepo: NetworkCardsRepo
     beforeEach(async () => {
-        spyCardsRepo = new NetworkCardsRepo()
+        spyCardsRepo = new NetworkCardsRepo(new StubFetchWrapper())
         const mockCardsList = [
             {front: "足袋", back: "たび"},
             {front: "甲子園", back: "こうしえん"},

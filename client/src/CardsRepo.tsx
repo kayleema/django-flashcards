@@ -9,9 +9,18 @@ export interface CardsRepo {
     reviewCard(correct: Boolean): Promise<void>
 }
 
+export interface FetchWrapper {
+    fetch(url: string, options?: {}): Promise<any>
+}
+
 export class NetworkCardsRepo implements CardsRepo {
+    private fetchWrapper: FetchWrapper
+
+    constructor(fetchWrapper: FetchWrapper) {
+        this.fetchWrapper = fetchWrapper
+    }
     async getCards(): Promise<Card[]> {
-        const response = await fetch("/flashcards/cards/")
+        const response = await this.fetchWrapper.fetch("/flashcards/cards/")
         if (!response.ok ) {
             return Promise.reject(response.status)
         }
