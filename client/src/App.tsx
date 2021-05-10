@@ -16,7 +16,7 @@ function App(props: AppProps) {
         props.cardsRepo.getCards().then((cards) => {
             setCards(cards)
         }).catch((reason) => {
-            window.location.href = '/accounts/login/'
+            window.location.href = 'http://localhost:8000/accounts/login/'
         })
     }, [])
 

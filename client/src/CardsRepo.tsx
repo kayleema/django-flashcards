@@ -1,4 +1,3 @@
-
 export interface Card {
     front: String
     back: String
@@ -19,15 +18,26 @@ export class NetworkCardsRepo implements CardsRepo {
     constructor(fetchWrapper: FetchWrapper) {
         this.fetchWrapper = fetchWrapper
     }
+
     async getCards(): Promise<Card[]> {
         const response = await this.fetchWrapper.fetch("/flashcards/cards/")
-        if (!response.ok ) {
+        if (!response.ok) {
             return Promise.reject(response.status)
         }
         return await response.json()
     }
 
-    reviewCard(correct: Boolean): Promise<void> {
-        return Promise.resolve(undefined);
+    async reviewCard(correct: Boolean): Promise<void> {
+        const requestOptions = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({isCorrect: correct})
+        };
+
+        const response = await this.fetchWrapper.fetch("/flashcards/review/", requestOptions)
+        if (!response.ok) {
+            return Promise.reject(response.status)
+        }
+        return Promise.resolve()
     }
 }
