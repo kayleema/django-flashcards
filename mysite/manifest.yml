@@ -1,0 +1,5 @@
+---
+applications:
+  - name: django-flashcards
+    buildpack: python_buildpack
+    command: python manage.py runserver 0.0.0.0:8000
