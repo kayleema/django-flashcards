@@ -1,5 +1,8 @@
 ---
 applications:
   - name: django-flashcards
-    buildpack: python_buildpack
-    command: python manage.py runserver 0.0.0.0:8000
+    buildpacks:
+      - https://github.com/cloudfoundry/python-buildpack
+    memory: 32m
+    random-route: true
+# this is a test

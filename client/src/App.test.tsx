@@ -2,6 +2,7 @@ import React from 'react';
 import {act, render, screen} from '@testing-library/react';
 import App from './App';
 import {NetworkCardsRepo} from "./CardsRepo";
+import Card from './Card'
 import userEvent from "@testing-library/user-event";
 import SpyFetchWrapper from "../testHelpers/SpyFetchWrapper";
 
@@ -12,9 +13,9 @@ describe("App", () => {
     beforeEach(async () => {
         spyCardsRepo = new NetworkCardsRepo(new SpyFetchWrapper())
         const mockCardsList = [
-            {front: "足袋", back: "たび"},
-            {front: "甲子園", back: "こうしえん"},
-            {front: "兵庫", back: "ひょうご"}
+            new Card(8, "足袋", "たび"),
+            new Card(9, "甲子園", "こうしえん"),
+            new Card(10, "兵庫", "ひょうご")
         ]
         jest.spyOn(spyCardsRepo, 'getCards').mockResolvedValue(mockCardsList);
         jest.spyOn(spyCardsRepo, 'reviewCard').mockResolvedValue(undefined);
@@ -25,8 +26,8 @@ describe("App", () => {
     })
 
     test('calls api for cards and displays first card', async () => {
-        expect(await screen.findByText('足袋')).toBeInTheDocument()
         expect(spyCardsRepo.getCards).toHaveBeenCalled()
+        expect(await screen.findByText('足袋')).toBeInTheDocument()
     })
 
     describe('表示のボタンを押すと', () => {
@@ -47,7 +48,7 @@ describe("App", () => {
                 const maru = await screen.getByText('○')
                 userEvent.click(maru)
 
-                expect(spyCardsRepo.reviewCard).toBeCalledWith(true)
+                expect(spyCardsRepo.reviewCard).toBeCalledWith(8, true)
             })
         })
         describe('バツのボタンを押すと', () => {
@@ -55,7 +56,7 @@ describe("App", () => {
                 const batsu = await screen.getByText('✕️')
                 userEvent.click(batsu)
 
-                expect(spyCardsRepo.reviewCard).toBeCalledWith(false)
+                expect(spyCardsRepo.reviewCard).toBeCalledWith(8, false)
             })
         })
     })

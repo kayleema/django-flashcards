@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from 'react';
 import './App.css';
-import {Card, CardsRepo} from "./CardsRepo";
+import {CardsRepo} from "./CardsRepo";
+import Card from "./Card";
 
 type AppProps = {
     cardsRepo: CardsRepo
@@ -16,9 +17,9 @@ function App(props: AppProps) {
         props.cardsRepo.getCards().then((cards) => {
             setCards(cards)
         }).catch((reason) => {
-            window.location.href = 'http://localhost:8000/accounts/login/'
+            // window.location.href = 'http://localhost:8000/accounts/login/'
         })
-    }, [])
+    }, [props.cardsRepo])
 
     useEffect(() => {
         if (showRef.current) {
@@ -27,7 +28,7 @@ function App(props: AppProps) {
     }, [cards])
 
     function handleReviewButtonClick(isCorrect: Boolean) {
-        props.cardsRepo.reviewCard(isCorrect).then()
+        props.cardsRepo.reviewCard(cards[0].id, isCorrect).then()
     }
 
     return (
