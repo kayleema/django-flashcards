@@ -1,5 +1,5 @@
 from django.test import TestCase
-from flashcards.models import Card
+from flashcards.models.models import Card
 from django.contrib.auth.models import User
 
 

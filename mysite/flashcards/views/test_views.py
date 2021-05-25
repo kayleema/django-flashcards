@@ -1,10 +1,10 @@
 import json
 
-from django.test import TestCase
-from django.test import Client
-
-from flashcards.models import Card
 from django.contrib.auth.models import User
+from django.test import Client
+from django.test import TestCase
+
+from flashcards.models.models import Card
 
 
 class ViewsTests(TestCase):
@@ -56,3 +56,6 @@ class ViewsTests(TestCase):
         self.assertEqual(response.json(), [
             {"id": 1, "front": "足袋", "back": "たび", "author": self.test_user.id}
         ])
+
+
+

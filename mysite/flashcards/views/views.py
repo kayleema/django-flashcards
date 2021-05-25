@@ -1,7 +1,7 @@
-from rest_framework import serializers, viewsets
 from rest_framework import permissions
+from rest_framework import serializers, viewsets
 
-from flashcards.models import Card
+from flashcards.models.models import Card
 
 
 class CardSerializer(serializers.HyperlinkedModelSerializer):
@@ -21,3 +21,6 @@ class CardViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
+
+
+
