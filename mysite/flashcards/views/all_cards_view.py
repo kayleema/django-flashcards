@@ -1,18 +1,11 @@
 from rest_framework import permissions
-from rest_framework import serializers, viewsets
+from rest_framework import viewsets
 
+from flashcards.card_serializer import CardSerializer
 from flashcards.models.models import Card
 
 
-class CardSerializer(serializers.HyperlinkedModelSerializer):
-    author = serializers.PrimaryKeyRelatedField(read_only=True)
-
-    class Meta:
-        model = Card
-        fields = ['id', 'front', 'back', 'author']
-
-
-class CardViewSet(viewsets.ModelViewSet):
+class AllCardsViewSet(viewsets.ModelViewSet):
     serializer_class = CardSerializer
     permission_classes = [permissions.IsAuthenticated]
 
