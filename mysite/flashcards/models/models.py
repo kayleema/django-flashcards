@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils import timezone
+from datetime import date
 
 
 class Card(models.Model):
@@ -7,4 +7,4 @@ class Card(models.Model):
     back = models.TextField()
     author = models.ForeignKey('auth.User', on_delete=models.CASCADE, null=False)
     interval = models.IntegerField(default=1)
-    due_date = models.DateField(default=timezone.now)
+    due_date = models.DateField(default=date.today)

@@ -44,11 +44,16 @@ describe("App", () => {
             expect(batsu).toBeInTheDocument()
         })
         describe('丸のボタンを押すと', () => {
-            test('バックエンドのカード復習APIを呼ぶ', async () => {
+            beforeEach(async () => {
                 const maru = await screen.getByText('○')
                 userEvent.click(maru)
-
+            })
+            test('バックエンドのカード復習APIを呼ぶ', async () => {
                 expect(spyCardsRepo.reviewCard).toBeCalledWith(8, true)
+            })
+            test('次のカードの表を表示', async () => {
+                expect(await screen.findByText('甲子園')).toBeInTheDocument()
+                expect(screen.queryByText('こうしえん')).toBeNull()
             })
         })
         describe('バツのボタンを押すと', () => {
@@ -58,6 +63,19 @@ describe("App", () => {
 
                 expect(spyCardsRepo.reviewCard).toBeCalledWith(8, false)
             })
+        })
+    })
+    describe('全て達成した場合', () => {
+        beforeEach(() => {
+            userEvent.click(screen.getByText('表示'))
+            userEvent.click(screen.getByText('○'))
+            userEvent.click(screen.getByText('表示'))
+            userEvent.click(screen.getByText('○'))
+            userEvent.click(screen.getByText('表示'))
+            userEvent.click(screen.getByText('○'))
+        })
+        test('おめでとうメッセージがみえる', async () => {
+            expect(await screen.findByText('全て達成した場合')).toBeInTheDocument()
         })
     })
 })

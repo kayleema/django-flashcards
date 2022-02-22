@@ -1,8 +1,0 @@
----
-applications:
-  - name: django-flashcards
-    buildpacks:
-      - https://github.com/cloudfoundry/python-buildpack
-    memory: 32m
-    random-route: true
-# this is a test

@@ -17,7 +17,7 @@ export class NetworkCardsRepo implements CardsRepo {
     }
 
     async getCards(): Promise<Card[]> {
-        const response = await this.fetchWrapper.fetch("/flashcards/cards/")
+        const response = await this.fetchWrapper.fetch("/flashcards/due/")
         if (!response.ok) {
             return Promise.reject(response.status)
         }

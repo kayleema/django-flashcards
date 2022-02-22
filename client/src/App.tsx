@@ -17,7 +17,11 @@ function App(props: AppProps) {
         props.cardsRepo.getCards().then((cards) => {
             setCards(cards)
         }).catch((reason) => {
-            // window.location.href = 'http://localhost:8000/accounts/login/'
+            if(window.location.host === "localhost:3000"){
+                window.location.href = 'http://localhost:8000/accounts/login/'
+            } else {
+                window.location.href = '/accounts/login/'
+            }
         })
     }, [props.cardsRepo])
 
@@ -28,7 +32,10 @@ function App(props: AppProps) {
     }, [cards])
 
     function handleReviewButtonClick(isCorrect: Boolean) {
-        props.cardsRepo.reviewCard(cards[0].id, isCorrect).then()
+        const reviewId = cards[0].id
+        const result = props.cardsRepo.reviewCard(reviewId, isCorrect)
+        setShowingAnswer(false)
+        setCards(cards.filter((card) => card.id !== reviewId))
     }
 
     return (
@@ -36,6 +43,7 @@ function App(props: AppProps) {
             <header>分散学習</header>
             <h1>
                 {cards.length > 0 && cards[0].front}
+                {cards.length === 0 && <span>全て達成した場合</span>}
             </h1>
             {showingAnswer && (
                 <>
@@ -44,7 +52,7 @@ function App(props: AppProps) {
                     <button onClick={() => {handleReviewButtonClick(true)}}>○</button>
                 </>
             )}
-            {!showingAnswer && (
+            {!showingAnswer && cards.length > 0 && (
                 <button ref={showRef} onClick={() => {
                     setShowingAnswer(true)
                 }}>表示</button>

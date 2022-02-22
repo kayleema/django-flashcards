@@ -27,6 +27,18 @@ describe('CardsRepo', () => {
 
             await expect(result).rejects.toEqual(403)
         })
+        test('calls with url', async () => {
+            const spyGetCardsFetchWrapper = new SpyFetchWrapper()
+            spyGetCardsFetchWrapper.fetch_return_value = {
+                ok: true,
+                json: () => ([{id: 1, author: "summer", front: "足袋", back: "たび"}])
+            }
+            const cardsRepo = new NetworkCardsRepo(spyGetCardsFetchWrapper)
+
+            const result = await cardsRepo.getCards()
+
+            expect(spyGetCardsFetchWrapper.fetch_arg_url).toEqual("/flashcards/due/")
+        })
     })
 
     describe('reviewCard', () => {
