@@ -39,12 +39,13 @@ pip freeze > requirements.txt
 # Deploy
 
 ```
-git checkout deploy
-# first merge main branch then...
+git checkout deploy  # switch to deploy branch
+git merge main  # merge changes from main branch
 cd client
+rm -rf build # remove old build bundle
 npm i
-npm run build
+npm run build  # build frontend bundle
 git add .
-git commit -m "build bundle"
-git push heroku deploy:main
+git commit -m "build bundle"  # commit built bundle to the deploy branch
+git push heroku deploy:main  # deploy changes to heroku
 ```
