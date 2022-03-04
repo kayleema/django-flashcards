@@ -35,3 +35,16 @@ python manage.py migrate
 pip install my-new-dependency
 pip freeze > requirements.txt
 ```
+
+# Deploy
+
+```
+git checkout deploy
+# first merge main branch then...
+cd client
+npm i
+npm run build
+git add .
+git commit -m "build bundle"
+git push heroku deploy:main
+```
