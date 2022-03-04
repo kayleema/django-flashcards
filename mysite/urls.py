@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.contrib.staticfiles.views import serve
 
 urlpatterns = [
     path('flashcards/', include('flashcards.urls')),
@@ -22,4 +23,6 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
 
     path('accounts/', include('allauth.urls')),
+
+    path('', serve, kwargs={'path': 'index.html'}),
 ]
