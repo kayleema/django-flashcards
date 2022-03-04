@@ -2,6 +2,7 @@ import React, {useEffect, useRef, useState} from 'react';
 import './App.css';
 import {CardsRepo} from "./CardsRepo";
 import Card from "./Card";
+import CardEdit from './CardEdit';
 
 type AppProps = {
     cardsRepo: CardsRepo
@@ -10,6 +11,7 @@ type AppProps = {
 function App(props: AppProps) {
     const [cards, setCards] = useState([] as Card[])
     const [showingAnswer, setShowingAnswer] = useState(false)
+    const [dialogState, setDialogState] = useState(false)
 
     const showRef = useRef<HTMLButtonElement>(null);
 
@@ -40,10 +42,13 @@ function App(props: AppProps) {
 
     return (
         <div className="App">
-            <header>分散学習</header>
+            <header>
+                <span className="brand">🎒</span>
+                <button onClick={() => {setDialogState(true)}}>カード追加</button>
+            </header>
             <h1>
                 {cards.length > 0 && cards[0].front}
-                {cards.length === 0 && <span>全て達成した場合</span>}
+                {cards.length === 0 && <span>全て達成しました</span>}
             </h1>
             {showingAnswer && (
                 <>
@@ -56,6 +61,12 @@ function App(props: AppProps) {
                 <button ref={showRef} onClick={() => {
                     setShowingAnswer(true)
                 }}>表示</button>
+            )}
+            {dialogState && (
+                <CardEdit 
+                    cardsRepo={props.cardsRepo} 
+                    onClose={() => setDialogState(false)}
+                />
             )}
         </div>
     );

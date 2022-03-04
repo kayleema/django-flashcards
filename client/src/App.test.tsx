@@ -1,5 +1,5 @@
 import React from 'react';
-import {act, render, screen} from '@testing-library/react';
+import {act, render, screen, waitForElementToBeRemoved} from '@testing-library/react';
 import App from './App';
 import {NetworkCardsRepo} from "./CardsRepo";
 import Card from './Card'
@@ -75,7 +75,20 @@ describe("App", () => {
             userEvent.click(screen.getByText('○'))
         })
         test('おめでとうメッセージがみえる', async () => {
-            expect(await screen.findByText('全て達成した場合')).toBeInTheDocument()
+            expect(await screen.findByText('全て達成しました')).toBeInTheDocument()
+        })
+    })
+    describe('追加ボタンを押す', () => {
+        beforeEach(() => {
+            userEvent.click(screen.getByText('カード追加'))
+        })
+        test('おめでとうメッセージがみえる', async () => {
+            expect(await screen.findByText('カードを追加')).toBeInTheDocument()
+        })
+        test('キャンセルボタン', async () => {
+            expect(await screen.findByText('キャンセル')).toBeInTheDocument()
+            userEvent.click(screen.getByText('キャンセル'))
+            expect(screen.queryByText('カードを追加')).not.toBeInTheDocument()
         })
     })
 })

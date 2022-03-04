@@ -4,7 +4,6 @@ from rest_framework import viewsets
 from flashcards.card_serializer import CardSerializer
 from flashcards.models.models import Card
 
-
 class AllCardsViewSet(viewsets.ModelViewSet):
     serializer_class = CardSerializer
     permission_classes = [permissions.IsAuthenticated]

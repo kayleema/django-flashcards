@@ -72,4 +72,40 @@ describe('CardsRepo', () => {
             await expect(result).rejects.toEqual(403)
         })
     })
+    
+    describe('addCard', () => {
+        test('calls /flashcards/cards/ endpoint with post and json body', async () => {
+            const spyGetCardsFetchWrapper = new SpyFetchWrapper()
+            const cardsRepo = new NetworkCardsRepo(spyGetCardsFetchWrapper)
+            spyGetCardsFetchWrapper.fetch_return_value = {
+                ok: true,
+                json: () => ([{id: 1, author: "summer", front: "fronttext", back: "backtext"}])
+            }
+
+            await cardsRepo.addCard("fronttext", "backtext")
+
+            expect(spyGetCardsFetchWrapper.fetch_arg_url).toEqual("/flashcards/cards/")
+            expect(spyGetCardsFetchWrapper.fetch_arg_options).toEqual({
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': null,
+                },
+                body: JSON.stringify({front: "fronttext", back: "backtext"})
+            })
+        })
+
+        test('returns promise rejection when response not ok', async () => {
+            const spyGetCardsFetchWrapper = new SpyFetchWrapper()
+            spyGetCardsFetchWrapper.fetch_return_value = {
+                ok: false,
+                status: 403
+            }
+            const cardsRepo = new NetworkCardsRepo(spyGetCardsFetchWrapper)
+
+            const result = cardsRepo.reviewCard(1, true)
+
+            await expect(result).rejects.toEqual(403)
+        })
+    })
 })
