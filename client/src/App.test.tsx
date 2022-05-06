@@ -75,7 +75,7 @@ describe("App", () => {
             userEvent.click(screen.getByText('○'))
         })
         test('おめでとうメッセージがみえる', async () => {
-            expect(await screen.findByText('全て達成しました')).toBeInTheDocument()
+            expect(await screen.findByText('全てのカードを達成しました')).toBeInTheDocument()
         })
     })
     describe('追加ボタンを押す', () => {

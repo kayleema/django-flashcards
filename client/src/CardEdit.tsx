@@ -21,7 +21,7 @@ export default function CardEdit(props: {cardsRepo: CardsRepo, onClose: () => vo
             <form onSubmit={handleSubmit}>
                 <label>
                     表<br/>
-                    <textarea name="front" />
+                    <textarea autoFocus name="front" />
                 </label>
 
                 <label>

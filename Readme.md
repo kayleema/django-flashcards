@@ -48,4 +48,5 @@ npm run build  # build frontend bundle
 git add .
 git commit -m "build bundle"  # commit built bundle to the deploy branch
 git push heroku deploy:main  # deploy changes to heroku
+git checkout main
 ```
