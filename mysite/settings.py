@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-1y05v@5rp0e4f4md(tkpva#w-#k23)huv#0()epacvs8x21l0c
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['peaceful-anchorage-88874.herokuapp.com', 'kankaku.kaylee.jp']
+ALLOWED_HOSTS = ['peaceful-anchorage-88874.herokuapp.com', 'kankaku.kaylee.jp', '168.138.42.254', '127.0.0.1']
 
 # Application definition
 
@@ -51,6 +51,7 @@ SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -151,5 +152,5 @@ STATICFILES_DIRS = [
 ]
 
 # Configure Django App for Heroku.
-import django_heroku
-django_heroku.settings(locals())
+# import django_heroku
+# django_heroku.settings(locals())
