@@ -9,6 +9,8 @@ source venv/bin/activate
 pip install -r requirements.txt
 ```
 
+For MacOS postgres dependency: `brew install postgresql@15`
+
 Initialize database
 ```shell
 python manage.py migrate

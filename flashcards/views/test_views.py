@@ -1,12 +1,11 @@
 import json
-from datetime import timedelta, datetime
+from datetime import datetime
 from unittest.mock import patch
-
-from django.utils import timezone
 
 from django.contrib.auth.models import User
 from django.test import Client
 from django.test import TestCase
+from django.utils import timezone
 
 from flashcards.models.models import Card
 
@@ -41,9 +40,11 @@ class ViewsTests(TestCase):
         response = self.client.get('/flashcards/cards/')
 
         self.assertEqual(response.json(), [
-            {"id": 1, "front": "足袋", "back": "たび", "author": self.test_user.id, "interval": 1,
+            {'url': 'http://testserver/flashcards/cards/1/', "id": 1, "front": "足袋", "back": "たび",
+             "author": self.test_user.id, "interval": 1,
              "due_date": "2021-05-20"},
-            {"id": 2, "front": "麻雀", "back": "マージャン", "author": self.test_user.id, "interval": 1,
+            {'url': 'http://testserver/flashcards/cards/2/', "id": 2, "front": "麻雀", "back": "マージャン",
+             "author": self.test_user.id, "interval": 1,
              "due_date": "2021-05-20"}
         ])
 
@@ -66,6 +67,7 @@ class ViewsTests(TestCase):
         response = self.client.get('/flashcards/cards/')
 
         self.assertEqual(response.json(), [{
+            'url': 'http://testserver/flashcards/cards/1/',
             "id": 1,
             "front": "足袋",
             "back": "たび",

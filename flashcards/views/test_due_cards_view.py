@@ -31,9 +31,23 @@ class DueCardsViewTest(TestCase):
 
         response = self.client.get('/flashcards/due/')
 
-        self.assertEqual(response.json(), [
-            {"id": 1, "front": "足袋", "back": "たび", "author": self.test_user.id, 'interval': 1,
-             'due_date': '2021-05-10'},
-            {"id": 2, "front": "麻雀", "back": "マージャン", "author": self.test_user.id, 'interval': 1,
-             'due_date': '2021-05-20'}
+        self.assertListEqual(response.json(), [
+            {
+                'url': 'http://testserver/flashcards/cards/1/',
+                "id": 1,
+                "front": "足袋",
+                "back": "たび",
+                "author": self.test_user.id,
+                'interval': 1,
+                'due_date': '2021-05-10'
+            },
+            {
+                'url': 'http://testserver/flashcards/cards/2/',
+                "id": 2,
+                "front": "麻雀",
+                "back": "マージャン",
+                "author": self.test_user.id,
+                'interval': 1,
+                'due_date': '2021-05-20'
+            }
         ])
